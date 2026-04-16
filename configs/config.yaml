@@ -1,0 +1,50 @@
+# Project-wide configuration
+project:
+  name: ecommerce-return-risk
+  random_seed: 42
+
+data:
+  # Kaggle dataset slug (owner/dataset-name)
+  kaggle_dataset: "sharmajicoder/amazon-e-commerce"
+  raw_path: "data/raw/amazon_ecommerce.csv"
+  processed_path: "data/processed/"
+  reference_path: "data/reference/reference.csv"
+  # Filled in during Phase 2 after EDA
+  target_column: "TBD_AFTER_EDA"
+  positive_class_definition: "TBD_AFTER_EDA"
+  test_size: 0.2
+  validation_size: 0.1
+
+features:
+  # Filled in during Phase 2 after schema inspection
+  numeric_cols: []
+  low_cardinality_cat_cols: []   # one-hot encode these
+  high_cardinality_cat_cols: []  # target-encode these
+  datetime_cols: []
+  drop_cols: []  # IDs, leakage risks
+
+model:
+  type: xgboost
+  params:
+    n_estimators: 400
+    max_depth: 6
+    learning_rate: 0.08
+    subsample: 0.9
+    colsample_bytree: 0.9
+    objective: "binary:logistic"
+    eval_metric: ["auc", "aucpr"]   # PR-AUC matters for imbalanced target
+    # scale_pos_weight is set dynamically in training based on class ratio
+
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment_name: "return_risk_prediction"
+  registered_model_name: "return_risk_classifier"
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+
+monitoring:
+  drift_threshold: 0.1
+  performance_threshold_auc: 0.70
+  performance_threshold_pr_auc: 0.35  # tuned after baseline in Phase 3
