@@ -1,0 +1,5 @@
+outs:
+- md5: e72c0dd47fa4e3e6f6100bb63c256f3f
+  size: 133349813
+  hash: md5
+  path: amazon_ecommerce_1M.csv

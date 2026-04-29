@@ -6,7 +6,8 @@ project:
 data:
   # Kaggle dataset slug (owner/dataset-name)
   kaggle_dataset: "sharmajicoder/amazon-e-commerce"
-  raw_path: "data/raw/amazon_ecommerce.csv"
+  raw_dir: "data/raw/"
+  raw_file: "data/raw/amazon_ecommerce_1M.csv"
   processed_path: "data/processed/"
   reference_path: "data/reference/reference.csv"
   # Filled in during Phase 2 after EDA
@@ -16,12 +17,30 @@ data:
   validation_size: 0.1
 
 features:
-  # Filled in during Phase 2 after schema inspection
-  numeric_cols: []
-  low_cardinality_cat_cols: []   # one-hot encode these
-  high_cardinality_cat_cols: []  # target-encode these
-  datetime_cols: []
-  drop_cols: []  # IDs, leakage risks
+  numeric_cols:
+    - price
+    - final_price
+    - discount
+    - rating
+    - review_count
+    - stock
+    - seller_rating
+    - shipping_time_days
+  low_cardinality_cat_cols:
+    - category
+    - subcategory
+    - brand
+    - location
+    - device
+    - payment_method
+  high_cardinality_cat_cols:
+    - seller_id
+  datetime_cols:
+    - purchase_date
+  drop_cols:
+    - user_id
+    - product_id
+    - delivery_status
 
 model:
   type: xgboost
